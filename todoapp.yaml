@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: todoapp
+spec:
+  selector:
+    app: todoapp
+  ports: 
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todoapp
+  labels: 
+    app: todoapp
+spec:
+  selector:
+    matchLabels:
+      app: todoapp
+  template:
+    metadata:
+      labels:
+        app: todoapp
+    spec:
+      containers:
+      - name: todoapp
+        image: philipl1/todoapp:latest
+        ports:
+        - containerPort: 5000
+        env:
+      - name: MY_VAR
+          value: "value of my var"
+        env:  
+      - name: DATABASE_URI
+          value: sqlite:///data.db
+        env:
+      - name: SECRET_KEY
+          SECRET_KEY: bhdasldjlhjdsddnjd
+  
